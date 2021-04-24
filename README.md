@@ -1,7 +1,7 @@
 # Umiko
 Permite usar a WinApi para criar facilmente hotkeys globais.
 
- - [Instale via crates.io](https://crates.io/crates/umiko)
+ - [Instale via crates.io](https://docs.rs/umiko/*/x86_64-pc-windows-msvc/)
  - [Documentação](https://docs.rs/umiko)
 
  ## Exemplo de uso:
