@@ -5,7 +5,7 @@ Permite usar a WinApi para criar facilmente hotkeys globais.
 
 [![Crates.io](https://img.shields.io/crates/v/umiko?style=flat-square)](https://crates.io/crates/umiko)
 [![Docs](https://img.shields.io/docsrs/umiko?style=flat-square)](https://docs.rs/umiko)
-
+[![Licença MIT](https://img.shields.io/github/license/Takasakiii/umiko?style=flat-square)](https://github.com/Takasakiii/umiko/blob/main/LICENSE)
  ## Exemplo de uso:
 ```rust
 use umiko::hotkeys::{HotKeys, KeyModifies};
