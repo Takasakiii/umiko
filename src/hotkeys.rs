@@ -3,7 +3,7 @@ use std::{collections::HashMap, mem::MaybeUninit};
 
 bitflags! {
     /// Representa os modificadores de tecla suportado pela winapi.
-    pub struct KeyModifies: u32 {
+    pub struct KeyModifiers: u32 {
         /// Nenhum modificador acionado.
         const NONE_MODIFIES = 0;
         /// Modificador de tecla `Alt`
@@ -56,14 +56,14 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::hotkeys::{HotKeys, KeyModifies};
+    /// use umiko::hotkeys::{HotKeys, KeyModifiers};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// hotkeys.add(KeyModifies::MOD_CONTROL | KeyModifies::MOD_ALT, 'h', || {
+    /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, 'h', || {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.handle();
-    pub fn add<F>(&mut self, key_modifies: KeyModifies, key: char, callback: F) -> HotKeyRegister
+    pub fn add<F>(&mut self, key_modifies: KeyModifiers, key: char, callback: F) -> HotKeyRegister
     where
         F: Fn() -> () + 'static
     {
@@ -107,10 +107,10 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::hotkeys::{HotKeys, KeyModifies};
+    /// use umiko::hotkeys::{HotKeys, KeyModifiers};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// let register = hotkeys.add(KeyModifies::MOD_CONTROL | KeyModifies::MOD_ALT, 'h', || {
+    /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, 'h', || {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.remove(register);
