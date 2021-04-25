@@ -1,6 +1,7 @@
 use winapi::{shared::windef::HWND, um::winuser::{RegisterHotKey, GetMessageW, UnregisterHotKey}};
 use std::{collections::HashMap, mem::MaybeUninit};
 
+
 bitflags! {
     /// Representa os modificadores de tecla suportado pela winapi.
     pub struct KeyModifiers: u32 {
@@ -22,6 +23,7 @@ bitflags! {
 }
 
 /// Referencia a uma hotkey registrada no sistema.
+#[derive(Clone, Copy)]
 pub struct HotKeyRegister {
     id: i32
 }
@@ -29,7 +31,7 @@ pub struct HotKeyRegister {
 /// Responsavel por gerenciar os webhooks do programa.
 pub struct HotKeys {
     id: i32,
-    callbacks: HashMap<i32, Box<dyn Fn() -> () + 'static>>
+    callbacks: HashMap<i32, Box<dyn Fn(&mut HotKeys) -> () + 'static>>
 }
 
 
@@ -59,13 +61,13 @@ impl HotKeys {
     /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
+    /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, |_| {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.handle();
     pub fn add<F>(&mut self, key_modifies: KeyModifiers, key: u32, callback: F) -> HotKeyRegister
     where
-        F: Fn() -> () + 'static
+        F: Fn(&mut HotKeys) -> () + 'static
     {
         unsafe {
             RegisterHotKey(0 as HWND, self.id, key_modifies.bits(), key);
@@ -81,15 +83,18 @@ impl HotKeys {
     }
 
     /// Recebe os eventos da winapi e redireciona aos devidos callbacks, deve sempre ser a ultima instrução da thread.
-    pub fn handle(&self) {
+    pub fn handle(mut self) {
         unsafe {
+            let self_not_muted = &self as *const HotKeys;
             let mut msg = MaybeUninit::zeroed()
                 .assume_init();
             while GetMessageW(&mut msg, 0 as HWND, 0, 0) != 0 {
                 if msg.message == 786 {
                     let id = msg.wParam as i32;
-                    if let Some(event) = self.callbacks.get(&id) {
-                        event();
+                    let element = &(*self_not_muted).callbacks.get(&id);
+                    if element.is_some() {
+                        let event = element.unwrap();
+                        event(&mut self);
                     }
                 }
             }
@@ -105,7 +110,7 @@ impl HotKeys {
     /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
+    /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, |_| {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.remove(register);

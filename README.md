@@ -11,7 +11,7 @@ Permite usar a WinApi para criar facilmente hotkeys globais.
 use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
 
 let mut hotkeys = HotKeys::new();
-hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
+hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, |_| {
     println!("Control + alt + h acionado!");
 });
 hotkeys.handle();
