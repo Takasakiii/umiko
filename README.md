@@ -8,7 +8,7 @@ Permite usar a WinApi para criar facilmente hotkeys globais.
 [![Licença MIT](https://img.shields.io/github/license/Takasakiii/umiko?style=flat-square)](https://github.com/Takasakiii/umiko/blob/main/LICENSE)
  ## Exemplo de uso:
 ```rust
-use umiko::{hotkeys::{HotKeys, KeyModifiers}, keys::Keys};
+use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
 
 let mut hotkeys = HotKeys::new();
 hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {

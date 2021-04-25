@@ -84,7 +84,7 @@ impl Keys {
     pub const F22: u32 = 0x85;
     pub const F23: u32 = 0x86;
     pub const F24: u32 = 0x87;
-    pub const NUMLOCK: u32 = 0x90;
+    pub const NUM_LOCK: u32 = 0x90;
     pub const SCROLL_LOCK: u32 = 0x91;
     pub const CAPS_LOCK: u32 = 0x14;
     pub const L_SHIFT: u32 = 0xA0;
