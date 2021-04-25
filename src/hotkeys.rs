@@ -56,24 +56,19 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::hotkeys::{HotKeys, KeyModifiers};
+    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, 'h', || {
+    /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.handle();
-    pub fn add<F>(&mut self, key_modifies: KeyModifiers, key: char, callback: F) -> HotKeyRegister
+    pub fn add<F>(&mut self, key_modifies: KeyModifiers, key: u32, callback: F) -> HotKeyRegister
     where
         F: Fn() -> () + 'static
     {
-        let key_capitalize = key
-            .to_uppercase()
-            .next()
-            .unwrap();
-
         unsafe {
-            RegisterHotKey(0 as HWND, self.id, key_modifies.bits(), key_capitalize as u32);
+            RegisterHotKey(0 as HWND, self.id, key_modifies.bits(), key);
         }
 
         self.callbacks.insert(self.id, Box::new(callback));
@@ -107,10 +102,10 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::hotkeys::{HotKeys, KeyModifiers};
+    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
-    /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, 'h', || {
+    /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
     ///     println!("Control + alt + h acionado!");
     /// });
     /// hotkeys.remove(register);

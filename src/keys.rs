@@ -13,21 +13,22 @@ pub enum KeyState {
     None = 0
 }
 
+
+
 /// Pega o atual estado de uma tecla, retornando seu estado de forma não tratada.
 ///
 /// `key_code`: é o codigo ascii da tecla que deseja pegar seu estado.
 ///
 /// # Exemplo:
 /// ```
-/// use umiko::keys::{check_key_state, KeyState};
-/// let capslock_key_code = 0x14;
-/// if check_key_state(capslock_key_code) == KeyState::Lock {
+/// use umiko::{common::Keys, keys::{KeyState, check_key_state}};
+/// if check_key_state(Keys::CAPS_LOCK) == KeyState::Lock {
 ///    // tecla capslock esta em estado Lock
 /// }
 /// ```
-pub fn check_key_state(key_code: i32) -> KeyState {
+pub fn check_key_state(key_code: u32) -> KeyState {
     unsafe {
-        let key_state = GetKeyState(key_code);
+        let key_state = GetKeyState(key_code as i32);
         match key_state {
             -128 => KeyState::Press,
             -127 => KeyState::PressAndLock,
@@ -45,13 +46,12 @@ pub fn check_key_state(key_code: i32) -> KeyState {
 ///
 /// # Exemplo:
 /// ```
-/// use umiko::keys::is_pressed;
-/// let capslock_key_code = 0x14;
-/// if is_pressed(capslock_key_code) {
+/// use umiko::{common::Keys, keys::is_pressed};
+/// if is_pressed(Keys::CAPS_LOCK) {
 ///    // tecla capslock esta sendo pressionada
 /// }
 /// ```
-pub fn is_pressed(key_code: i32) -> bool {
+pub fn is_pressed(key_code: u32) -> bool {
     match check_key_state(key_code) {
         KeyState::None => false,
         KeyState::Lock => false,
@@ -65,13 +65,12 @@ pub fn is_pressed(key_code: i32) -> bool {
 ///
 /// # Exemplo:
 /// ```
-/// use umiko::keys::is_locked;
-/// let capslock_key_code = 0x14;
-/// if is_locked(capslock_key_code) {
+/// use umiko::{common::Keys, keys::is_locked};
+/// if is_locked(Keys::CAPS_LOCK) {
 ///    // tecla capslock esta ativada
 /// }
 /// ```
-pub fn is_locked(key_code: i32) -> bool {
+pub fn is_locked(key_code: u32) -> bool {
     match check_key_state(key_code) {
         KeyState::PressAndLock => true,
         KeyState::Lock => true,
