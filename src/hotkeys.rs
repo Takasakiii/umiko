@@ -1,6 +1,5 @@
 use winapi::{shared::windef::HWND, um::winuser::{RegisterHotKey, GetMessageW, UnregisterHotKey}};
 use std::{collections::HashMap, mem::MaybeUninit};
-use crate::keys::Keys;
 
 bitflags! {
     /// Representa os modificadores de tecla suportado pela winapi.
@@ -57,7 +56,7 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, keys::Keys};
+    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
     /// hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
@@ -103,7 +102,7 @@ impl HotKeys {
     ///
     /// # Exemplo:
     /// ```
-    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, keys::Keys};
+    /// use umiko::{hotkeys::{HotKeys, KeyModifiers}, common::Keys};
     ///
     /// let mut hotkeys = HotKeys::new();
     /// let register = hotkeys.add(KeyModifiers::MOD_CONTROL | KeyModifiers::MOD_ALT, Keys::H, || {
